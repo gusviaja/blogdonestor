@@ -36,16 +36,19 @@ class AdminController extends CI_Controller {
 	}
 
 	public function form_login(){
-		if($this->session->has_userdata("usuario_logado")):
+		/* if($this->session->has_userdata("nome")):
 			redirect("/");
-		endif;
-
-		$this->load->view("admin/form_login");
-		
+		else: */
+			$this->load->view("admin/form_login");
+		//endif;
 	}
 	
 	public function logar(){
-
+	/* 	foreach ($_SESSION as $s => $value) {
+			echo "<pre>";
+			echo $s."===>".$value;echo "</pre>";
+		}
+		die; */
 		$dados = $this->input->post();
 		$email = trim($dados["inputEmail"]);
 		$pass = $dados["inputPassword"];
@@ -57,12 +60,18 @@ class AdminController extends CI_Controller {
 			$ok = password_verify($pass,$pass_db);
 
 			if($ok):
-				$usuario_logado = [
+				$usuario_logado = array (
 					"nome" => $retorno->user_nome,
 					"email"=>$retorno->user_email,
-					"nivel" => $retorno->user_nivel
-				];
+					"nivel" => $retorno->user_nivel,
+					"ip"=>$_SERVER["REMOTE_ADDR"],
+					
+				);
+				
+					
+				
 				$this->session->set_userdata($usuario_logado);
+				
 				$this->session->set_flashdata("success",$retorno->user_nome." logado com sucesso");
 				$this->load->template('admin/admin_panel');
 			else:
@@ -81,7 +90,7 @@ class AdminController extends CI_Controller {
 	}
 
 	public function sair(){
-		session_destroy();
+		$this->session->sess_destroy();
 		redirect("entrar");
 	}
 }

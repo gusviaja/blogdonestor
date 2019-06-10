@@ -20,7 +20,7 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('themes/padrao/home'); // atualizar o painel para que puxe a rota dinamica da tabela preferencias do banco.
+		$this->load->theme_template('themes/padrao/home'); // atualizar o painel para que puxe a rota dinamica da tabela preferencias do banco.
 		
 	}
 }

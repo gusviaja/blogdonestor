@@ -59,7 +59,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['admin'] = 'admin/AdminController/index';
 $route['entrar'] = 'admin/AdminController/form_login';
-$route['admin'] = 'admin/AdminController/logar';
+$route['logar'] = 'admin/AdminController/logar';
 $route['sair'] = 'admin/AdminController/sair';
 
 

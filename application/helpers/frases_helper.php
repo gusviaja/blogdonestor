@@ -14,7 +14,7 @@ define('CATEGORIA_NAO_ENCONTRADA','A categoria seleccionada não foi
 encontrada ou ocorreu um erro no carregamento');
 define('CATEGORIA_NOME_ALTERADO','O nome da categoria foi alterado com sucesso');
 define('CATEGORIA_GERENTE_ALTERADO','O Gerente da categoria foi renomeado com sucesso');
-
+define('THEME_DIRECTORY','application'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'padrao');
 
 
 //==============================================================//
@@ -44,6 +44,9 @@ define("USUARIO_NAO_ENCONTRADO","O usuario solicitado não foi encontrado");
 define("PASS_NAO_ALTERADO","Nao foi possivel alterar o password");
 define("PASS_ALTERADO","O password foi alterado com sucesso");
 define("PASS_DIVERGENTES","Validacao do servidor, Os campos Novo Password e Verificacao devem ser identicos");
+
+//==========================CONSTANTES DE SISTEMA==========================//
+define("ADMINLTE_PATH",'application\third_party\AdminLTE-2.4.10');
 
 
 

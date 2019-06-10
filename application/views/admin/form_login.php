@@ -22,7 +22,7 @@
   <body>
   
  
-    <form class="form-signin" method="post" action="<?=base_url('admin')?>">
+    <form class="form-signin" method="post" action="<?=base_url('logar')?>">
       <div class="text-center mb-4">
         <?php if($this->session->flashdata()):
 
