@@ -1,11 +1,10 @@
 
 
 
-    <!doctype html>
-<html lang="pt-br">
-<div class="container">
+    
+    <div class="container">
       <header class="blog-header py-3">
-        Header  
+        <?php preferencias("titulo_site"); ?> 
       </header>
 
 
@@ -117,7 +116,7 @@
       </div>
     </div>
 
-    <main role="main" class="container">
+    <main role="main" class="container" role='main'>
       <div class="row">
         <div class="col-md-8 blog-main">
           <h3 class="pb-3 mb-4 font-italic border-bottom">

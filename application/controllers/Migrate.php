@@ -11,6 +11,16 @@ class Migrate extends CI_Controller
                 {
                         show_error($this->migration->error_string());
                 }
+                else{
+                        echo "Migração concluida com sucesso";
+                }
+        }
+
+        public function migolds(){
+
+                $this->load->library('migration');
+                print_r($this->migration->find_migrations());
+   
         }
 
 }

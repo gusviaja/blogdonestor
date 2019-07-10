@@ -1,0 +1,54 @@
+create table tbl_status (status_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+status_name VARCHAR(60) NOT NULL UNIQUE);
+
+insert into tbl_status(status_name) values ("ativo");
+insert into tbl_status(status_name) values ("inativo");
+insert into tbl_status(status_name) values ("deletado");
+
+//======ADDING FOREIGN KEY ON TBL_POSTS======//
+
+// PARA ALTERAR UMA COLUNA BASICAMENTE USO ALTER TABLE MODIFY COLUMN NOMEDA COLUMNA E TIPO
+// CASO QUEIRA TBM ALTERAR O NOME USO ALTER TABLE CHANGE COLUMN NOMEVELHO NOMENOVO E TIPO
+alter table tbl_posts 
+ADD CONSTRAINT fk_post_status 
+FOREIGN KEY (post_status) references tbl_status(status_id);
+
+alter table tbl_posts 
+ADD CONSTRAINT fk_editor_id 
+FOREIGN KEY (post_editor_id) references tbl_user(user_id);
+
+// join para categoria e status name
+select tbl_categories.category_name as nome, tbl_status.status_name as status from tbl_categories 
+left join tbl_status on tbl_categories.category_status = tbl_status.status_id;
+
+alter table tbl_posts 
+ADD CONSTRAINT fk_subcategory_id 
+FOREIGN KEY (post_subcategory_id) references tbl_subcategories(subcategory_id);
+
+alter table tbl_subcategories
+add constraint fk_subc_status
+foreign key (subcategory_status) references tbl_status(status_id);
+
+alter table tbl_user
+add constraint fk_user_status
+foreign key (user_status) references tbl_status(status_id);
+
+alter table tbl_user
+add constraint fk_user_level
+foreign key (user_level) references tbl_user_level(level_id);
+
+alter table tbl_categories
+add constraint fk_cat_status
+foreign key (category_status) references tbl_status(status_id);
+
+// insert de um post
+insert into tbl_posts (post_title, post_subcategory_id, post_content,post_editor_id, post_coverurl)  values 
+("Estrutura basica de pagina", 1, "Colocar aqui o conteudo do post",1,"20190619/estrutura_basica_de_uma_pagina");
+
+
+
+//daba erro pq ambas colunas das tabelas devem ser identicas
+//tomar cuidado com isso, faltaba um unsigned e tbm era int(5) e nao int(11)
+// outro cuidado, se vamos criar uma fk em uma tabela que ja tem registros,
+//se tiver algum registro com valor que nao seria aceito pela tabela pai
+//dara erro e nao criara a fk, fiz um update na tabela filha para poder criar.

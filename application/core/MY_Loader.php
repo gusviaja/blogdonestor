@@ -8,13 +8,16 @@ Class MY_Loader extends CI_Loader{
 
         }
 
-        public function template($nomeDoTemplate,$dados = null)
+        public function template($nomeDoTemplate,$dados = null, $comfooter = 1)
         {
+               // var_dump($dados);die;
                 //$dados['usuariostored']=carregaDadosUser();
            
         	$this->view('admin/layout/cabecalho.php', $dados);
                 $this->view($nomeDoTemplate,$dados);
-                $this->view('admin/layout/footer.php');
+                if($comfooter === 1):
+                 $this->view('admin/layout/footer.php');
+                endif;
         }
 
         public function theme_template($nomeDoTemplate,$dados = null)

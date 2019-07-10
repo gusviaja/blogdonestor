@@ -39,4 +39,11 @@
         //echo " quis acessar admin sem estar logado";die;
        redirect(base_url("entrar"));
     endif;
+
+    if( trim($primeiro_segmento) === "api" && !isset($_SESSION["nome"]) ): //TRUE TRUE
+        //echo " quis acessar admin sem estar logado";die;
+        $return = array("data"=>"Necessita estar logado para acessar dados");
+        echo json_encode($return);
+        exit;
+    endif;
 }

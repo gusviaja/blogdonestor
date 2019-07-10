@@ -61,12 +61,32 @@ $route['admin'] = 'admin/AdminController/index';
 $route['entrar'] = 'admin/AdminController/form_login';
 $route['logar'] = 'admin/AdminController/logar';
 $route['sair'] = 'admin/AdminController/sair';
+$route['login/recuperar'] = 'admin/AdminController/recuperar_senha_form';
+$route['login/enviatoken'] = 'admin/AdminController/gerar_e_enviartoken';
+$route['altera/password/(:any)'] = 'admin/AdminController/valida_token_alterar_password';
+$route['novo/password'] = 'admin/AdminController/novo_password';
+$route['form/lista/preferencias'] = 'admin/AdminController/form_lista_preferencias';
+$route['admin/editaperfil/:num'] = 'admin/UsuariosController/form_edita_perfil';
+$route['admin/usuario/alteraimagem'] = 'admin/UsuariosController/form_edita_imagem';
+$route['admin/usuario/atualizaperfil'] = 'admin/UsuariosController/atualiza_perfil';
+//==========================================//
+//================AJAX==============//
+//=========================================//
+
+$route['api/lista/posts'] = 'admin/PostController/lista_posts';
+$route['api/lista/chamadas'] = 'admin/ChamadasController/lista_chamadas';
+$route['api/lista/usuarios'] = 'admin/UsuariosController/lista_usuarios';
+$route['api/lista/subcategorias'] = 'admin/SubcategoriasController/lista_subcategorias';
+$route['api/lista/qtd_posts_por_subcategoria'] = 'admin/SubcategoriasController/qtd_posts_por_subcategoria';
+
+$route['api/lista/preferencias'] = 'admin/AdminController/lista_preferencias';
 
 
 //==========================================//
 //================MIGRATIONS==============//
 //=========================================//
 $route['migrate'] = 'Migrate/index';
+$route['migolds'] = 'Migrate/migolds';
 
 
 

@@ -32,8 +32,8 @@ define("DADOS_INCORRETOS","Acesso negado, as credenciais informadas são incorre
 //==============================================================//
 //===========================GERAIS SITE======================//
 //=============================================================//
-define('TITULO_SITE','Blog Exemplo Ni Sistemas');
-define('EMAIL_INICIAL','Senhainicial12');
+define('TITULO_SITE','Blog do Nestor');
+define('SENHA_INICIAL','Senhainicial12');
 
 //==============================================================//
 //===========================USUARIOS - OPERACOES===============//
@@ -47,6 +47,7 @@ define("PASS_DIVERGENTES","Validacao do servidor, Os campos Novo Password e Veri
 
 //==========================CONSTANTES DE SISTEMA==========================//
 define("ADMINLTE_PATH",'application\third_party\AdminLTE-2.4.10');
+define("IMG_USU_PATH",'dist'.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'usuarios'.DIRECTORY_SEPARATOR);
 
 
 
