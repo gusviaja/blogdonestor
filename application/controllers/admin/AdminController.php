@@ -1,12 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//Import the PHPMailer class into the global namespace
-use \PHPMailer\PHPMailer\PHPMailer;
-//SMTP needs accurate times, and the PHP time zone MUST be set
-//This should be done in your php.ini, but this is how to do it if you don't have access to that
-//date_default_timezone_set('Etc/UTC');
-
 
 class AdminController extends CI_Controller {
 
@@ -14,7 +8,7 @@ class AdminController extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         $this->load->model(array("UserModel","ChamadasModel","AdminModel","PostModel","SubcategoriasModel"));
-       
+       $this->load->helper(array("preferencias"));
     }
 
 
@@ -22,53 +16,57 @@ class AdminController extends CI_Controller {
 	public function index()
 	
 	{
-		
 		$template = 'admin/admin_panel.php';
 		$dados = $this->load_resume();
-
 		//echo json_encode($dados);
 		$this->load->template($template,$dados);
 	}
 
 	public function form_login(){
 	
-			$this->load->view("admin/form_login");
+			$this->load->template("admin/form_login");
 	}
 	
 	public function logar(){
 	
 		$dados = $this->input->post();
-		$email = trim($dados["inputEmail"]);
-		$pass = $dados["inputPassword"];
+		$email = trim($dados["user_email"]);
+		$pass = trim($dados["user_pass"]);
+		
 		$hash = password_hash($pass,PASSWORD_DEFAULT);
 		
 		if($retorno = $this->UserModel->buscaUsuario($email) ):
-
+			
 			$pass_db = $retorno->user_pass;
 			$ok = password_verify($pass,$pass_db);
 
 			if($ok):
 				$usuario_logado = array (
-					"id" =>$retorno->user_id,
-					"nome" => $retorno->user_name,
-					"email"=>$retorno->user_email,
-					"nivel" => $retorno->user_level,
-					"ip"=>$_SERVER["REMOTE_ADDR"],
+					"user_id" =>$retorno->user_id,
+					"user_name" => $retorno->user_name,
+					"user_email"=>$retorno->user_email,
+					"user_level" => $retorno->user_level,
+					"user_ip"=>$_SERVER["REMOTE_ADDR"],
 					
 				);
 				
-					
+				
 				
 				$this->session->set_userdata($usuario_logado);
+				
+				//echo 'logou e carregou sessao';
+				$this->session->set_flashdata("success",'logado com sucesso');
 				redirect(base_url("admin"));
 			else:
-				
+				//echo 'NAO logou, SENHA ERRADA OU INCORRETA';
 				$this->session->set_flashdata("danger",DADOS_INCORRETOS);
-				redirect("entrar");
+				redirect(base_url("entrar"));
 			endif;
 		else:
-			$this->session->set_flashdata("danger",EMAIL_INEXISTENTE);
-			redirect("entrar");
+			$frase = " $email --  ".EMAIL_INEXISTENTE;
+			$this->session->set_flashdata('danger',$frase);
+			redirect(base_url("entrar"));
+		
 		endif;
 
 			
@@ -130,7 +128,8 @@ class AdminController extends CI_Controller {
 			endif;
 			
 		else:
-			$this->session->set_flashdata('danger',EMAIL_INEXISTENTE);
+			$frase = " $email -- ".EMAIL_INEXISTENTE;
+			$this->session->set_flashdata('danger',$frase);
 			redirect('login/recuperar');
 		endif;
 
@@ -138,27 +137,68 @@ class AdminController extends CI_Controller {
 
 	public function lista_preferencias(){
 
-		$preferencias = array(
-			"title"=>"titulo del blog",
-			"subtitle"=>"subtitulo del blog",
-			"description"=>"descripcao del blog",
-
-	);
+		
 		$obj = json_encode($preferencias);
 		echo $obj;
 	}
 
 	public function form_lista_preferencias(){
 
-		$dados = array(
-			
-			"title"=>"titulo del blog",
-			"subtitle"=>"subtitulo del blog",
-			"description"=>"descripcao del blog",
-
-		);
-		$this->load->template('admin/form_lista_preferencias',$dados);
+		//$dados = $preferencias;
+		$this->load->template('admin/form_lista_preferencias');
 	}
+
+
+	public function salva_preferencias(){
+		$post = $this->input->post();
+
+		//dd($post);
+		$filename = 'application/helpers/preferencias_helper.php';
+		$fopen = fopen($filename,"w+");
+
+		$conteudo = '<?php
+		
+		
+		function get_preferencias(string $key){
+			
+			$preferencias = array(
+				"site_title" =>"'.$post["title"].'",
+				"description" =>"'.$post["description"].'",
+				"author" => "Ni Sistemas | desenvolvimento de sistemas web 
+				em São Paulo com pagamento em ate 12x",
+				"email_contato" =>"'.$post["email_contato"].'",
+		
+			);
+
+			if(array_key_exists($key,$preferencias)):
+				echo trim($preferencias[$key]);
+				return;
+			else:
+				$arr = array($key => "Preferencia não existe no sistema");
+				echo $arr[$key];
+			endif;
+			
+		}
+		
+		
+		';
+		
+		
+		if( fwrite($fopen,$conteudo) ):
+			fclose($fopen);
+			redirect(base_url('admin'));
+		else:
+			redirect(base_url('admin/form/lista/preferencias'));
+		endif;
+		
+
+	}
+
+	public function debug(){
+		$conteudo = file_get_contents('debugs'.DIRECTORY_SEPARATOR.'debug.txt',__DIR__);
+		echo $conteudo;
+	}
+
 
 	//==========================ALTERAR PASSWORD==================//
 	///////////////////////////////////////////////////////////////
@@ -192,6 +232,75 @@ class AdminController extends CI_Controller {
 			//
 		}
 
+
+		public function altera_status(){
+			$element = $this->uri->segment(3);
+			$element = strtolower($element);
+
+			switch ($element) {
+				case "post":
+				$post_id = $this->uri->segment(4);
+				
+					if(!$alterado = $this->PostModel->altera_status($post_id)):
+						
+						$response = array('data'=>ERROR);
+					echo json_encode($response);
+				//	redirect(base_url('admin'));
+				else:
+					//$response = array('data'=>SUCESSO);
+					$response = array('data'=>"$alterado");
+					echo json_encode($response);
+				endif;
+					break;
+					
+				case 'chamada':
+					$chamada_id = $this->uri->segment(4);
+					if(!$alterado = $this->ChamadasModel->altera_status($chamada_id)):
+						$response = array('data'=>ERROR);
+						echo json_encode($response);
+					//	redirect(base_url('admin'));
+					else:
+						//$response = array('data'=>SUCESSO);
+						$response = array('data'=>"$alterado");
+						echo json_encode($response);
+					endif;
+						break;
+
+				case 'subcategory':
+				$subcategory_id = $this->uri->segment(4);
+			//	debug($subcategory_id);
+				if(!$alterado = $this->SubcategoriasModel->altera_status($subcategory_id)):
+						
+					$response = array('data'=>ERROR);
+					echo json_encode($response);
+				//	redirect(base_url('admin'));
+				else:
+					//$response = array('data'=>SUCESSO);
+					$response = array('data'=>"$alterado");
+					echo json_encode($response);
+				endif;
+				//debug($response);
+					break;
+
+				case 'user':
+					$user_id = $this->uri->segment(4);
+					if(!$alterado = $this->UserModel->altera_status($user_id)):
+							
+						$response = array('data'=>ERROR);
+						echo json_encode($response);
+					//	redirect(base_url('admin'));
+					else:
+						//$response = array('data'=>SUCESSO);
+						$response = array('data'=>"$alterado");
+						echo json_encode($response);
+					endif;
+						break;
+				
+				default:
+					
+					break;
+			}
+		} 
 
 	//====================================================//
 	//------------FUNCOES PRIVADAS-----------------------//

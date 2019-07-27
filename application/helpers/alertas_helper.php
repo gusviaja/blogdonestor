@@ -19,15 +19,17 @@ function sucesso($constante){
  }
 
  function alertas(){
+    
      $ci = get_instance();
+    if($ci->session->flashdata()):
     if($ci->session->flashdata('success')):
-       echo "<div class='alert alert-success'>".$ci->session->flashdata('success').
-       "</div>";
+       echo "<div class='alert alert-success alert-dismissible' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Fechar'><span aria-hidden='true'>&times;</span></button><p class=text-center>".$ci->session->flashdata('success').
+       "</p></div>";
       
      elseif($ci->session->flashdata('danger')):
-        echo "<div class='alert alert-danger'>".$ci->session->flashdata('danger').
-        "</div>";
+        echo "<div class='alert alert-danger alert-dismissible' role='alert'> <button type='button' class='close' data-dismiss='alert' aria-label='Fechar'><span aria-hidden='true'>&times;</span></button><p class=text-center>".$ci->session->flashdata('danger').
+        "</p></div>";
      endif;
       	
-
+    endif;
  }

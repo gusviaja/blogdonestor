@@ -20,7 +20,8 @@
         margin-bottom:30px;
     }
 </style>
-
+</head>
+<body>
 <div class="container">
     <?php alertas() ?>
     <div class="row perfil-header"> <!-- first row -->
@@ -55,15 +56,15 @@
 
             <div class='col-md-6'> <!-- principal col2 -->
                 <form method="post" action="<?=base_url('admin/usuario/atualizaperfil')?>">
-                    <input name='inputId' type='hidden' value="<?=$user_id?> " >
+                    <input name='user_id' type='text' value="<?=$user_id?> " hidden>
                     <div class="form-group">
-                        <label for="inputName">Nome:</label>
-                        <input name="inputName" class="form-control input-lg" value="<?=$user_name?>"> 
+                        <label for="user_name">Nome:</label>
+                        <input name="user_name" class="form-control input-lg" value="<?=$user_name?>"> 
                     </div>
 
                     <div class="form-group">
-                        <label for="inputEmail">Email:</label>
-                        <input  name="inputEmail" class="form-control input-lg"  value="<?=$user_email?>"> 
+                        <label for="user_email">Email:</label>
+                        <input  name="user_email" class="form-control input-lg"  value="<?=$user_email?>"> 
                     </div>
                     <button class="btn btn-primary btn-block" type="submit">Salvar</button>
                 </form>

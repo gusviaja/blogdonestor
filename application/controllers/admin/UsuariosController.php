@@ -14,7 +14,12 @@ class UsuariosController extends CI_Controller {
 	
 	public function form_edita_perfil(){
 		if( $id = $this->uri->segment(3)):
-			$usuario = $this->UserModel->mostra_perfil($id);
+
+			if(!$usuario = $this->UserModel->mostra_perfil($id)):
+				$this->session->set_flashdata("danger",ERROR);
+				redirect(base_url('admin'));
+			endif;
+			
 			unset($usuario->user_pass);
 			$usuario->user_img_path = str_replace("'","",$usuario->user_img_path);
 			$usuario->status_name = strtoupper($usuario->status_name);
@@ -54,7 +59,7 @@ class UsuariosController extends CI_Controller {
 			$this->load->template("admin/form_editaperfil",$usuario,0);
 		else:
 			$this->session->set_flashdata("danger",EMAIL_INEXISTENTE);
-			redirect('admin');
+			redirect(base_url('admin'));
 		endif;
 		
 		
@@ -72,7 +77,7 @@ class UsuariosController extends CI_Controller {
 			$new_name = 'fotoperfil.jpg';
 			$size = $files['size'];
 	
-			 $id = $_SESSION['id']; 
+			 $id = $_SESSION['user_id']; 
 			 $path_img = 'dist'.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.
 			 'usuarios'.DIRECTORY_SEPARATOR.$id;
 			//dd($path_img);
@@ -80,38 +85,53 @@ class UsuariosController extends CI_Controller {
 			if($type !== 'jpg' &&  $type !== 'jpeg'):
 				$this->session->set_flashdata("danger","formato da imagem 
 				$type não aceito");
-				redirect("admin/editaperfil/$id");
+				redirect(base_url("admin/editaperfil/$id"));
 			endif;
 
 			if($size > 7000):
 				$this->session->set_flashdata("danger","Tamanho da imagem 
 				$size acima do limite, se precissar recortar uma imagem recomendamos 
 				<a href='https://www.befunky.com/pt/recursos/cortar-foto/' alt='Befunky'>Befunky aqui</a>");
-				redirect("admin/editaperfil/$id");
+				redirect(base_url("admin/editaperfil/$id"));
 			endif;
 
 			if( is_dir( $path_img )): 
 				move_uploaded_file($tmp_name,$path_img.DIRECTORY_SEPARATOR.$new_name);
-				echo 'com sucesso';
+				//echo 'com sucesso';
+				
 			else:
 				mkdir($path_img,0775);
 				move_uploaded_file($tmp_name,$path_img.DIRECTORY_SEPARATOR.$new_name);
 			endif;
-		
+			redirect(base_url("admin"));
 		endif;
 		//echo "$tmp_name ---   $name ----  e tipo: $type";
 	}
 
 	public function atualiza_perfil(){
+		if(!isset($_POST)):
+			redirect('admin');
+		endif;
+
 		$dataset = $this->input->post();
-		//dd($dataset);
+		foreach ($dataset as $key => $value) {
+			$value = trim($value);
+		}
+		
+	    $dataset['user_id'] = trim($dataset['user_id']);
+		$dataset['user_name'] = addslashes(trim($dataset['user_name']));
+		$dataset['user_email'] = trim($dataset['user_email']); 
+		
+		
 		
 		if( !$perfil_atualizado = $this->UserModel->atualiza_perfil($dataset) ):
 			$this->session->set_flashdata("danger",ERROR);
-				redirect("admin/editaperfil/$id");
+			redirect( base_url( "admin" ) );
 		else:
+			
+			
 			$this->session->set_flashdata("success",SUCESSO);
-				redirect("admin");
+			redirect(base_url("admin"));
 		endif;
 	}
 
@@ -131,5 +151,20 @@ class UsuariosController extends CI_Controller {
 		echo json_encode($obj);
 	}
 
+	//====================================================//
+	//-----------------FUNCOES PRIVADAS-------------------//
+    //====================================================//
+	private function atualiza_sessao($dataset){
+	
+	foreach ($dataset as $key => $value) {
+		$_SESSION[$key] = $value;
+	}
+	
+	
+		/* $retorno = $this->UserModel->buscaUsuario($dataset['user_email']);
+		$this->session->set_userdata($retorno); */
+		redirect(base_url("admin"));
+
+	}
 
 }

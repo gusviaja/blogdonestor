@@ -9,9 +9,14 @@ class UserModel extends CI_Model {
 
     public function buscaUsuario($email){
     
-        $query = "select * from tbl_user where user_email = '$email' and user_status = 1";
-        $query = $this->db->query($query);
-        if( $user = $query->last_row() ):
+        $query = "select * from tbl_user where user_email = ? and user_status = 1";
+        //dd($query);
+        $qb = array($email);
+        $query = $this->db->query($query,$qb);
+        //dd($query);
+        if( $query ): 
+        $user = $query->first_row();
+          // dd($user);
             return $user;
         else:
             return FALSE;
@@ -96,7 +101,25 @@ public function mostra_perfil($id){
 }
 
 public function atualiza_perfil($dataset){
-    dd($dataset);
+    $tbl = "tbl_user";
+    $key = "user_id";
+    
+    $user_id = $dataset['user_id'];
+    unset($dataset['user_id']);
+
+
+    $this->db->where('user_id', $user_id);
+    
+
+    if( $this->db->update($tbl, $dataset)):
+      
+        return TRUE;
+    else:
+        return FALSE;
+    endif;
+
+ 
+
 }
 ///////////////////////////////////////////////////////////////////////////
 
@@ -115,16 +138,55 @@ return $return;
 
 public function lista_usuarios(){
 
-    $query = "select tbl_user.user_name, tbl_user.user_email, tbl_status.status_name, tbl_user_level.level_name
+    $query = "select tbl_user.user_id, tbl_user.user_name, tbl_user.user_img_path,tbl_user.user_email, tbl_status.status_name, tbl_user_level.level_name
     from tbl_user left join tbl_status on tbl_user.user_status = tbl_status.status_id 
     left join tbl_user_level on tbl_user.user_level = tbl_user_level.level_id";
 $list_usuarios = $this->db->query($query)->result_array();
+for ($i=0; $i < count($list_usuarios); $i++) { 
+    $list_usuarios[$i]['user_img_path'] = str_replace("'","",$list_usuarios[$i]['user_img_path']);
+
+}
+
+
 $return['data'] = $list_usuarios;
 $return['recordsTotal'] = count($list_usuarios);
 $return['recordsFiltered'] = count($list_usuarios);
 return $return;
 
 }
+
+public function altera_status($user_id){
+   
+
+    $query = "select user_status from tbl_user where user_id = ?";
+
+    if(!$user=  $this->db->query($query,array($user_id) ) ):
+            return FALSE;
+    else:
+       
+        $user = $user->row();
+        $user_status = (int) $user->user_status;
+       //debug($userstatus);
+        if($user_status === 1):
+            $return_status = 'inativo';
+            $query = "UPDATE tbl_user SET user_status = 2 WHERE user_id = ?";
+        
+        elseif($user_status === 2):
+            $return_status = 'ativo';
+            $query = "UPDATE tbl_user SET user_status = 1 WHERE user_id = ?";
+            
+        endif;
+        
+        if( $this->db->query($query,array($user_id) ) ):
+          
+            return  $return_status;
+        else:
+            return FALSE;
+        endif;
+    endif;
+   
+}
+
 
 
 }

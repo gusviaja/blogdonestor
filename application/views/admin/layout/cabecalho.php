@@ -1,15 +1,20 @@
-
-
-  <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang=pt-BR,pt-br>
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=TITULO_SITE?> | Painel</title>
+  <link rel="shortcut icon" href="<?=base_url('dist/img/favicon_blogodonestor.gif')?>"/>
+  <link rel="author"<?= get_preferencias('author') ?>/>
+  <link rel="description"<?= get_preferencias('description') ?>/>
+  <title><?= get_preferencias('admin_title') ?></title>
+  
+  
+
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="/dist/AdminLTE-2.4.10/bower_components/bootstrap/dist/css/bootstrap.min.css">
+ 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/dist/AdminLTE-2.4.10/bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -39,4 +44,18 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+<style>
+.mt-100{
+     margin-top:100px !important;
+}
+
+.pt-10{
+     padding-top:10px !important;
+}
+.p-10{
+     padding:10px !important;
+}
+.va-mid{
+     vertical-align:middle !important;
+}
+</style>

@@ -41,4 +41,36 @@ public function conta_chamadas(){
     return $return;
 }
 
+public function altera_status($chamada_id){
+   
+
+    $query = "select chamada_status from tbl_chamadas where chamada_id = ?";
+
+    if(!$chamada =  $this->db->query($query,array($chamada_id) ) ):
+            return FALSE;
+    else:
+       
+        $chamada = $chamada->row();
+        $chamada_status = (int) $chamada->chamada_status;
+       // dd($chamada_status);
+        if($chamada_status === 1):
+            $return_status = 'inativo';
+            $query = "UPDATE tbl_chamadas SET chamada_status = 2 WHERE chamada_id = ?";
+        
+            elseif($chamada_status === 2):
+                $return_status = 'ativo';
+            $query = "UPDATE tbl_chamadas SET chamada_status = 1 WHERE chamada_id = ?";
+            
+        endif;
+        
+        if( $this->db->query($query,array($chamada_id) ) ):
+            return  $return_status;
+        else:
+            return FALSE;
+        endif;
+    endif;
+   
+}
+
+
 }

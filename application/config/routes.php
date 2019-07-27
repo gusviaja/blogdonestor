@@ -50,13 +50,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'welcome';
-$route['404_override'] = '';
+$route['404_override'] = 'ErrorController/page_missing';
 $route['translate_uri_dashes'] = FALSE;
 
 //==========================================//
 //================ADMINISTACAO==============//
 //=========================================//
 
+//===============LOGIN, PASSWORD, ETC=================//
 $route['admin'] = 'admin/AdminController/index';
 $route['entrar'] = 'admin/AdminController/form_login';
 $route['logar'] = 'admin/AdminController/logar';
@@ -65,10 +66,20 @@ $route['login/recuperar'] = 'admin/AdminController/recuperar_senha_form';
 $route['login/enviatoken'] = 'admin/AdminController/gerar_e_enviartoken';
 $route['altera/password/(:any)'] = 'admin/AdminController/valida_token_alterar_password';
 $route['novo/password'] = 'admin/AdminController/novo_password';
-$route['form/lista/preferencias'] = 'admin/AdminController/form_lista_preferencias';
+
+
+$route['admin/form/lista/preferencias'] = 'admin/AdminController/form_lista_preferencias';
 $route['admin/editaperfil/:num'] = 'admin/UsuariosController/form_edita_perfil';
 $route['admin/usuario/alteraimagem'] = 'admin/UsuariosController/form_edita_imagem';
 $route['admin/usuario/atualizaperfil'] = 'admin/UsuariosController/atualiza_perfil';
+$route['admin/salva/preferencias'] = 'admin/AdminController/salva_preferencias';
+$route['admin/cria/post'] = 'admin/PostController/form_cria_post';
+$route['admin/cria/categoria'] = 'admin/CategoriesController/form_cria_categorias';
+$route['admin/salva/post'] = 'admin/PostController/salva_post';
+$route['admin/edita/post/:num'] = 'admin/PostController/form_edita_post';
+$route['admin/atualiza/post'] = 'admin/PostController/atualiza_post';
+$route['admin/debug'] = 'admin/AdminController/debug';
+
 //==========================================//
 //================AJAX==============//
 //=========================================//
@@ -78,8 +89,17 @@ $route['api/lista/chamadas'] = 'admin/ChamadasController/lista_chamadas';
 $route['api/lista/usuarios'] = 'admin/UsuariosController/lista_usuarios';
 $route['api/lista/subcategorias'] = 'admin/SubcategoriasController/lista_subcategorias';
 $route['api/lista/qtd_posts_por_subcategoria'] = 'admin/SubcategoriasController/qtd_posts_por_subcategoria';
-
+$route['api/lista/categorias'] = 'admin/CategoriesController/lista';
 $route['api/lista/preferencias'] = 'admin/AdminController/lista_preferencias';
+
+$route['api/alterastatus/(:any)/(:any)'] = 'admin/AdminController/altera_status';
+$route['api/lista/categorias'] = 'admin/SubcategoriasController/lista_categorias';
+$route['api/salva/subcategory'] = 'admin/SubcategoriasController/salva_subcategory';
+$route['api/salva/category'] = 'admin/CategoriesController/salva';
+$route['api/elimina/post/:num'] = 'admin/PostController/elimina_post';
+$route['api/elimina/subcategory/:num'] = 'admin/SubcategoriasController/elimina_subcategory';
+
+$route['api/busca/categoria/:num'] = 'admin/CategoriesController/busca';
 
 
 //==========================================//

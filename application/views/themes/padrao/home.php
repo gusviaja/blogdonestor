@@ -4,7 +4,7 @@
     
     <div class="container">
       <header class="blog-header py-3">
-        <?php preferencias("titulo_site"); ?> 
+        <?php get_preferencias("title"); ?> 
       </header>
 
 

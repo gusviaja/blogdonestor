@@ -50,7 +50,14 @@ define("ADMINLTE_PATH",'application\third_party\AdminLTE-2.4.10');
 define("IMG_USU_PATH",'dist'.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'usuarios'.DIRECTORY_SEPARATOR);
 
 
+function monta_url($string){
+    
+        $array_null = ["%",'?',"'",'"'];
+		$string = str_replace($array_null,"",$string);
+        $string = strtolower (str_replace(" ","_",$string));
 
+        return $string;
+}
 
 
 

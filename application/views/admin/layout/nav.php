@@ -14,16 +14,18 @@
 			<!-- <li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li> -->
 			<li class=""><a href="<?=base_url("admin")?>">Resumo</a></li> 
             
-            <li><a href="<?=base_url("form/lista/preferencias")?>">Preferencias</a></li>
-            <li><a href="<?=base_url("mailinglist")?>">Mailing List</a></li>
-            <li class="dropdown">
+            <li><a href="<?=base_url("admin/form/lista/preferencias")?>">Preferencias</a></li>
+<!--             <li><a href="<?=base_url("mailinglist")?>">Mailing List</a></li>
+ -->            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Editar Blog <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
 				  
-                <li><a href="<?=base_url("criar/categoria")?>">Criar categoria</a></li>
-                <li><a href="<?=base_url("criar/post")?>">Criar post</a></li>
+                <li><a onclick="toggle_form_categorias()">Criar categoria</a></li>
+                <li><a   onclick="toggle_form_subcategorias()" >Criar Sub-categoria</a></li>
+
+                <li><a href="<?=base_url("admin/cria/post")?>">Criar post</a></li>
                 <li class="divider"></li>
-                <li><a href="<?=base_url("criar/chamada")?>">Criar chamada</a></li>
+                <li><a href="<?=base_url("admin/cria/chamada")?>">Criar chamada</a></li>
          
               </ul>
             </li>
@@ -53,7 +55,7 @@
                 <!-- The user image in the navbar-->
                 <img src="/dist/img/fotoperfil.jpg" class="user-image" alt="User Image">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs"><?=$_SESSION['nome']?></span>
+                <span class="hidden-xs"><?=$_SESSION['user_name']?></span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
@@ -61,8 +63,8 @@
                   <img src="/dist/img/fotoperfil.jpg" class="img-circle" alt="User Image">
 
                   <p>
-				  <?=$_SESSION['nome']?>
-                    <small><strong>Nivel</strong><?=$_SESSION['nivel']?></small>
+				  <?=$_SESSION['user_name']?>
+                    <small><?=$_SESSION['user_email']?></small>
                   </p>
                 </li>
                 <!-- Eliminei a li de Menu Body -->
@@ -70,7 +72,7 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="<?=base_url('admin/editaperfil/'.$_SESSION['id'])?>" class="btn btn-default btn-flat">Perfil</a>
+                    <a href="<?=base_url('admin/editaperfil/'.$_SESSION['user_id'])?>" class="btn btn-default btn-flat">Perfil</a>
                   </div>
                   <div class="pull-right">
                     <a href="<?=base_url('sair')?>" class="btn btn-default btn-flat">Sair</a>

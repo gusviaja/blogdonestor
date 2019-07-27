@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="<?=THEME_DIRECTORY.DIRECTORY_SEPARATOR?>favicon.ico">
 
-    <title>Blog Template for Bootstrap</title>
+    <title><?=get_preferencias('site_title')?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?= THEME_DIRECTORY.DIRECTORY_SEPARATOR?>dist/css/bootstrap.min.css" rel="stylesheet">
